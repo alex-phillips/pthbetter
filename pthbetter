@@ -130,7 +130,7 @@ def main():
         group = api.request('torrentgroup', id=groupid)
         torrent = [t for t in group['torrents'] if t['id'] == torrentid][0]
         name = pthapi.unescape(group['group']['name'])
-        
+
         print
         print "Release found: %s (%s)" % (name.encode('utf-8'), group['group']['year'])
         print "Release URL: %s" % api.release_url(group, torrent)
@@ -198,7 +198,7 @@ def main():
                 tmpdir = tempfile.mkdtemp()
                 try:
                     transcode_dir = transcode.transcode_release(flac_dir, output_dir, format, max_threads=args.threads)
-                    new_torrent = transcode.make_torrent(transcode_dir, tmpdir, api.tracker, api.passkey)
+                    new_torrent = transcode.make_torrent(transcode_dir, tmpdir, api.tracker, api.passkey, config.get('passtheheadphones', 'piece_length'))
                     if upload_torrent:
                         permalink = api.permalink(torrent)
                         description = create_description(torrent, flac_dir, format, permalink)
